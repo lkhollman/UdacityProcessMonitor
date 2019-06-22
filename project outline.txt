@@ -1,0 +1,12 @@
+class Process {
+    Variable PID
+    Variable user
+    Variable CMD
+    variable CPU%
+    Variable Memory
+    Variable Time
+    
+    CONSTRUCTOR
+
+    Functions  Getters/Setters
+}

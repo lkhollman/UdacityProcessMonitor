@@ -1,4 +1,3 @@
-#pragma once  //I added
 #include <algorithm>
 #include <iostream>
 #include <math.h>
@@ -17,9 +16,9 @@
 #include <dirent.h>
 #include <time.h>
 #include <unistd.h>
-#include "constants.h"
-#include "Process.h"  //I added
-#include "Util.h"   //I added
+#include "constants.h"  //line from original file to establish constants. 
+//***************line 59 isPidExisting********************
+
 
 
 using namespace std;
@@ -50,12 +49,28 @@ public:
     static string getOSName();
     static std::string printCpuStats(std::vector<std::string> values1, std::vector<std::string>values2);
 
-    static bool isPidExisting(string pid);
+    static bool isPidExisting(string pid); //This gets called from line 45 in Process
+                                           //This wasn't defined below.  needs definition
 
     static int getNumberOfCores(); // I added.  function defined below, but not declared here.
 };
 // TODO: Define all of the above functions below:
 
+bool isPidExisting(std::string pid){  //I added this function
+    //look inside pid variable
+    //if a value exists return true, if a value doesn't exist return false
+    //call this function right after getPidList()
+    //convert string to int
+    std::string pidTest = pid; //declare string to hold converted pid and put value of pid in it.
+    int pidTest2;  //declare int for conversion
+    istringstream iss (pidTest);
+    iss >> pidTest2;
+    if(pidTest2 > 0){  //this is wrong.  returns the address of pid, not the value
+        return true;
+    }else{
+        return false;
+    }
+}
 
 std::string getVmSize(std::string pid){  //I entered this method, but was supplied
     std::string line;
@@ -516,5 +531,6 @@ int ProcessParser::getNumberOfRunningProcesses(){    //removed std::
     }
     return result;
 }
+
 
 

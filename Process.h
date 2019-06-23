@@ -1,6 +1,4 @@
-#pragma once //I added
 #include <string>
-#include "ProcessParser.h"  //I added
 
 
 using namespace std;
@@ -43,6 +41,7 @@ void Process::setPid(int pid){
 string Process::getPid()const {
     return this->pid;
 }
+
 string Process::getProcess(){
     if(!ProcessParser::isPidExisting(this->pid)){   //should it be getPidList??? and remove the definition from ProcessParser for isPidExisting???
         return "";

@@ -1,5 +1,4 @@
-#pragma once  //I added
-#include "Process.h"
+#include "Process.h" //needed because of line 9 using type "Process" 
 #include <vector>
 
 

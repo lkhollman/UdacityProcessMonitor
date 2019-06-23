@@ -1,4 +1,3 @@
-#pragma once  //I added
 #include <string>
 #include <fstream>
 

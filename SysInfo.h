@@ -1,8 +1,8 @@
-#pragma once //I added
 #include <string>
 #include <iostream>
 #include <vector>
-#include "ProcessParser.h"
+#include "ProcessParser.h"  //correct because it's on the 1st call from main.cpp
+
 
 
 //this class unites util and processParser classes

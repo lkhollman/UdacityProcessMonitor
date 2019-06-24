@@ -17,9 +17,6 @@
 #include <time.h>
 #include <unistd.h>
 #include "constants.h"  //line from original file to establish constants. 
-//***************line 59 isPidExisting********************
-
-
 
 using namespace std;
 
@@ -56,7 +53,7 @@ public:
 };
 // TODO: Define all of the above functions below:
 
-bool isPidExisting(std::string pid){  //I added this function
+bool ProcessParser::isPidExisting(std::string pid){  //I added this function
     //look inside pid variable
     //if a value exists return true, if a value doesn't exist return false
     //call this function right after getPidList()
@@ -72,7 +69,7 @@ bool isPidExisting(std::string pid){  //I added this function
     }
 }
 
-std::string getVmSize(std::string pid){  //I entered this method, but was supplied
+std::string ProcessParser::getVmSize(std::string pid){  //I entered this method, but was supplied
     std::string line;
     //Declaring search attribute for file
     std::string name = "VmData";  //the line in the file that we need to get the data from starts with VmData
@@ -106,7 +103,7 @@ std::string getVmSize(std::string pid){  //I entered this method, but was suppli
 }
 
 
-std::string getCpuPercent(std::string pid){
+std::string ProcessParser::getCpuPercent(std::string pid){
     //acquiring relevant times for calculation of active occupation of CPU for selected process
 
     //information is parsed from /proc/stat
@@ -531,6 +528,3 @@ int ProcessParser::getNumberOfRunningProcesses(){    //removed std::
     }
     return result;
 }
-
-
-

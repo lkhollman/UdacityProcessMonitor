@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include "constants.h"  //line from original file to establish constants. 
 
+//***************line 59 isPidExisting********************
+
 using namespace std;
 
 
@@ -56,13 +58,12 @@ public:
 bool ProcessParser::isPidExisting(std::string pid){  //I added this function
     //look inside pid variable
     //if a value exists return true, if a value doesn't exist return false
-    //call this function right after getPidList()
     //convert string to int
     std::string pidTest = pid; //declare string to hold converted pid and put value of pid in it.
     int pidTest2;  //declare int for conversion
     istringstream iss (pidTest);
     iss >> pidTest2;
-    if(pidTest2 > 0){  //this is wrong.  returns the address of pid, not the value
+    if(pidTest2 > 0){  
         return true;
     }else{
         return false;
@@ -266,13 +267,11 @@ std::string ProcessParser::getCmd(string pid){  //retrieve the command that exec
     std::ifstream stream;  //declare a new stream
 
     //Fill stream with a valid stream
-    //from above for example//Util::getStream(Path::basePath() + Path::upTimePath(), stream);
-
-
     Util::getStream(Path::basePath() + pid + Path::cmdPath(), stream);
 
     std::getline(stream, line);
-    return line;
+
+    return line;    
 }
 
 int ProcessParser::getNumberOfCores(){   //removed std::
@@ -528,3 +527,5 @@ int ProcessParser::getNumberOfRunningProcesses(){    //removed std::
     }
     return result;
 }
+
+

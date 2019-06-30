@@ -1,5 +1,6 @@
 #include <string>
 #include <fstream>
+#include <iostream>
 
 
 // Classic helper class with classic helper functions.
@@ -28,6 +29,7 @@ std::string Util::getProgressBar(std::string percent){
     std::string result = "0%% ";
     int _size= 50;
     int  boundaries;
+
     try {
         boundaries = (stof(percent)/100)*_size;
     } catch (...){
@@ -49,14 +51,33 @@ std::string Util::getProgressBar(std::string percent){
 
 // wrapper for creating streams
 std::string Util::getStream(std::string path, std::ifstream& stream){   //returns a Stream object of type ifstream
+    try
+    {
+        stream.open (path, std::ifstream::in);  //attempt to open stream
+        if (!stream && !stream.is_open()){  //if stream is false (can't open)
+            stream.close();  //close the stream  
+            throw std::runtime_error("Non - existing PID");   //throw a runtime error that states "Non - existing PID"
+        }
+        return path;        
+    }     
+    catch (...){        
+        std::cout << path << "\n";        
+        }
+    
+}
+
+
+/*
+// wrapper for creating streams
+std::string Util::getStream(std::string path, std::ifstream& stream){ //returns a Stream object of type ifstream
     stream.open (path, std::ifstream::in);  //attempt to open stream
-    if (!stream && !stream.is_open()){ //if stream is false (can't open)
-    stream.close();  //close the stream
-    }
-    try {
+    if (!stream && !stream.is_open()){  //if stream is false (can't open)
+        stream.close();  //close the stream  
         throw std::runtime_error("Non - existing PID");   //throw a runtime error that states "Non - existing PID"
     }
-    catch (...){
-    }
-    return path;
+    return path;        
 }
+
+*/
+
+

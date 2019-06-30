@@ -36,7 +36,7 @@ public:
     static string getVmSize(string pid);  //get virtual memory size based on the process (pid) passed to it and return
                                                //it as a string
     static std::string getCpuPercent(string pid);
-    static int getSysUpTime();  //I took out long, so not long int anymore
+    static long int getSysUpTime();  
     static std::string getProcUpTime(string pid);
     static string getProcUser(string pid); 
     static vector<string> getSysCpuPercent(string coreNumber = "");
@@ -55,19 +55,15 @@ public:
 };
 // TODO: Define all of the above functions below:
 
-bool ProcessParser::isPidExisting(std::string pid){  //I added this function
-    //look inside pid variable
-    //if a value exists return true, if a value doesn't exist return false
-    //convert string to int
-    std::string pidTest = pid; //declare string to hold converted pid and put value of pid in it.
-    int pidTest2;  //declare int for conversion
-    istringstream iss (pidTest);
-    iss >> pidTest2;
-    if(pidTest2 > 0){  
+bool ProcessParser::isPidExisting(std::string pid){  //I added this function.
+    //look inside pid variable and make sure it's in the pid list
+    //algorithm from Abhishek-Srujan's project
+    vector<string> pids = ProcessParser::getPidList();
+    for(auto i : pids){
+        if (i == pid)
         return true;
-    }else{
-        return false;
     }
+    return false;
 }
 
 std::string ProcessParser::getVmSize(std::string pid){  //I entered this method, but was supplied
@@ -113,7 +109,7 @@ std::string ProcessParser::getCpuPercent(std::string pid){
     //through to extract positions 14, 15, 16, and 21.  After extraction convert each to floats and place into variables. 
     //Then make some calculations on these variables to determine CPU percent usage.
 
-    //Path::basePath()+ pid + "/" + Path::statPath()
+    //Path::basePath()+ pid + "/" + Path::statPath();
 
     std::string line;
     std::string value;
@@ -123,20 +119,31 @@ std::string ProcessParser::getCpuPercent(std::string pid){
     std::ifstream stream; //declare stream
 
     //fill stream with a valid stream
-    Util::getStream(Path::basePath() + pid + Path::statusPath(), stream);  
+    Util::getStream(Path::basePath() + pid + Path::statPath(), stream);  //changed to statPath from statusPath
+    
+    //std::cout << "here ProcessParser::getCpuPercent line 128 " << "\n";
 
     std::getline(stream, line);
     string str = line;
+    
+    //std::cout << "here Line 133 ProcessParser::getCpuPercent line variable " << line << "\n";
+    
     std::istringstream buf(str);  //There is only 1 line to read in total, so read it into the string str
     std::istream_iterator<string> beg(buf), end;
     std::vector<string> values (beg, end);  //done reading in the string
     
-    //aquiring relevant times for calculation of active occupation of CPU for selected process
-    float utime = stof(ProcessParser::getProcUpTime(pid));
+    //aquiring relevant times for calculation of active occupation of CPU for selected processParse
 
+
+    
+    float utime = stof(ProcessParser::getProcUpTime(pid));
+    //std::cout << "hereProcessParser::getCpuPercent line 143 " << "get stime values[14] " << values[14]<< "\n";
     float stime = stof(values[14]); //index position 14
+    //std::cout << "hereProcessParser::getCpuPercent line 145" << "\n";
     float cutime = stof(values[15]); //index position 15
+    //std::cout << "hereProcessParser::getCpuPercent line 147" << "\n";
     float cstime = stof(values[16]); //index position 16
+    //std::cout << "hereProcessParser::getCpuPercent line 149" << "\n";
     float starttime = stof(values[21]); //index position 21
 
     float uptime = ProcessParser::getSysUpTime();
@@ -177,7 +184,7 @@ std::string ProcessParser::getProcUpTime(string pid){  //get process up time...(
 
 }
 
-int ProcessParser::getSysUpTime() {  //declared wrong at top or here?  GetSysUpTime
+long int ProcessParser::getSysUpTime() {  //declared wrong at top or here?  GetSysUpTime
     std::string line;
 
     std::ifstream stream;  //declare a new stream
@@ -239,7 +246,7 @@ std::vector<string> ProcessParser::getPidList(){  //return a Pid List from /proc
     std::vector<string> container;  //declare vector to hold file name (numbers) to return.  container is the return value
     if(!(dir = opendir("/proc")))  //try to open directory /proc.  
         throw std::runtime_error(std::strerror(errno));//  if there is an error display an error, otherwise continue
-
+    
     while (dirent* dirp = readdir(dir)) {
         // check to see if this is this a directory
         if(dirp->d_type != DT_DIR)

@@ -5,11 +5,11 @@ using namespace std;
 
 
 enum CPUStates{
-	S_USER = 1,
-	S_NICE,
-	S_SYSTEM,
-	S_IDLE,
-	S_IOWAIT,
+	S_USER = 1,  //setting this equal to 1 means that:
+	S_NICE,      //this = 2,
+	S_SYSTEM,     //this = 3,
+	S_IDLE,        //this = 4,
+	S_IOWAIT,      // and so on....
 	S_IRQ,
 	S_SOFTIRQ,
 	S_STEAL,
@@ -30,7 +30,7 @@ public:
         return "/status";
     }
     static string statPath(){
-        return "stat";
+        return "/stat";
     }
     static string upTimePath(){
         return "uptime";
